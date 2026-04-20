@@ -1384,6 +1384,30 @@ describe("model-selection", () => {
         }),
       ).toBe("low");
     });
+
+    it("returns adaptive for github-copilot/claude-opus-4.6 when no config override", () => {
+      const cfg = {} as OpenClawConfig;
+
+      expect(
+        resolveThinkingDefault({
+          cfg,
+          provider: "github-copilot",
+          model: "claude-opus-4.6",
+        }),
+      ).toBe("adaptive");
+    });
+
+    it("returns adaptive for github-copilot/claude-sonnet-4.6 when no config override", () => {
+      const cfg = {} as OpenClawConfig;
+
+      expect(
+        resolveThinkingDefault({
+          cfg,
+          provider: "github-copilot",
+          model: "claude-sonnet-4.6",
+        }),
+      ).toBe("adaptive");
+    });
   });
 });
 

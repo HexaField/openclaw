@@ -96,6 +96,23 @@ describe("github-copilot model defaults", () => {
       expect(def.api).toBe("openai-responses");
     });
 
+    it("sets reasoning=true for Claude model IDs", () => {
+      const def = buildCopilotModelDefinition("claude-opus-4.6");
+      expect(def.reasoning).toBe(true);
+      const def2 = buildCopilotModelDefinition("claude-sonnet-4.5");
+      expect(def2.reasoning).toBe(true);
+    });
+
+    it("sets reasoning=true for o-series model IDs", () => {
+      const def = buildCopilotModelDefinition("o1");
+      expect(def.reasoning).toBe(true);
+    });
+
+    it("sets reasoning=false for non-reasoning model IDs", () => {
+      const def = buildCopilotModelDefinition("gpt-4o");
+      expect(def.reasoning).toBe(false);
+    });
+
     it("throws on empty model id", () => {
       expect(() => buildCopilotModelDefinition("")).toThrow("Model id required");
       expect(() => buildCopilotModelDefinition("  ")).toThrow("Model id required");
@@ -157,10 +174,17 @@ describe("resolveCopilotForwardCompatModel", () => {
     }
   });
 
+  it("sets reasoning=true for Claude model IDs", () => {
+    for (const id of ["claude-opus-4.6", "claude-sonnet-4.6", "claude-sonnet-4.5"]) {
+      const ctx = createMockCtx(id);
+      const result = requireResolvedModel(ctx);
+      expect((result as unknown as Record<string, unknown>).reasoning).toBe(true);
+    }
+  });
+
   it("sets reasoning=false for non-reasoning model IDs including mid-string o1/o3", () => {
     for (const id of [
       "gpt-5.4-mini",
-      "claude-sonnet-4.6",
       "gpt-4o",
       "audio-o1-hd",
       "turbo-o3-voice",

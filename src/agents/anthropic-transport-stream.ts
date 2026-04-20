@@ -719,7 +719,12 @@ function resolveAnthropicTransportOptions(
   }
   if (supportsAdaptiveThinking(model.id)) {
     resolved.thinkingEnabled = true;
-    resolved.effort = mapThinkingLevelToEffort(options.reasoning, model.id) as NonNullable<
+    let effort = mapThinkingLevelToEffort(options.reasoning, model.id);
+    // Copilot API proxy does not support "max" effort — clamp to "high"
+    if (model.provider === "github-copilot" && effort === "max") {
+      effort = "high";
+    }
+    resolved.effort = effort as NonNullable<
       AnthropicOptions["effort"]
     >;
     return resolved;

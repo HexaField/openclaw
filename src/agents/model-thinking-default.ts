@@ -70,6 +70,13 @@ export function resolveThinkingDefault(params: {
   ) {
     return "adaptive";
   }
+  if (
+    normalizedProvider === "github-copilot" &&
+    (normalizedModel.startsWith("claude-opus-4-6") ||
+      normalizedModel.startsWith("claude-sonnet-4-6"))
+  ) {
+    return "adaptive";
+  }
   return resolveThinkingDefaultForModel({
     provider: params.provider,
     model: params.model,

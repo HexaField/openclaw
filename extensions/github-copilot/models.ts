@@ -42,7 +42,7 @@ export function resolveCopilotForwardCompatModel(
       const template = ctx.modelRegistry.find(
         PROVIDER_ID,
         templateId,
-      ) as ProviderRuntimeModel | null;
+      );
       if (!template) {
         continue;
       }
@@ -60,7 +60,7 @@ export function resolveCopilotForwardCompatModel(
   // model isn't available on the user's plan. This lets new models be used
   // by simply adding them to agents.defaults.models in openclaw.json — no
   // code change required.
-  const reasoning = /^o[13](\b|$)/.test(lowerModelId);
+  const reasoning = /^o[13](\b|$)/.test(lowerModelId) || lowerModelId.includes("claude");
   return normalizeModelCompat({
     id: trimmedModelId,
     name: trimmedModelId,

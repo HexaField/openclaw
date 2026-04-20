@@ -57,6 +57,14 @@ describe("github-copilot plugin", () => {
     expect(adapter.id).toBe("github-copilot");
   });
 
+  it("supportsXHighThinking returns true for GPT-5.x models only", () => {
+    const provider = _registerProvider();
+    expect(provider.supportsXHighThinking({ modelId: "gpt-5.4" })).toBe(true);
+    expect(provider.supportsXHighThinking({ modelId: "gpt-5.2" })).toBe(true);
+    expect(provider.supportsXHighThinking({ modelId: "claude-opus-4.6" })).toBe(false);
+    expect(provider.supportsXHighThinking({ modelId: "gpt-4o" })).toBe(false);
+  });
+
   it("skips catalog discovery when plugin discovery is disabled", async () => {
     const provider = registerProviderWithPluginConfig({ discovery: { enabled: false } });
 

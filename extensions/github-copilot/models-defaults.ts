@@ -33,7 +33,7 @@ export function buildCopilotModelDefinition(modelId: string): ModelDefinitionCon
     id,
     name: id,
     api: resolveCopilotTransportApi(id),
-    reasoning: false,
+    reasoning: id.toLowerCase().includes("claude") || /^o[13](\b|$)/.test(id.toLowerCase()),
     input: ["text", "image"],
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: DEFAULT_CONTEXT_WINDOW,
